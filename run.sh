@@ -70,3 +70,7 @@ ln -s /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/
 unlink /etc/nginx/sites-enabled/default
 
 nginx -s reload
+
+# install bind9
+yes | apt install bind9 bind9utils bind9-doc dnsutils
+mkdir /etc/bind/zones
