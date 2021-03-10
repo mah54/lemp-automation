@@ -59,3 +59,14 @@ cp ~/easy-rsa/pki/ca.crt /etc/nginx/ssl/
 cp ~/easy-rsa/pki/ca.crt ~/
 cp ~/easy-rsa/pki/issued/$CLIENT.crt ~/$CLIENT.pem
 cat ~/easy-rsa/pki/private/$CLIENT.key >> ~/$CLIENT.pem
+
+# nginx configuration file
+mv ~/lemp-automation/DOMAIN ~/lemp-automation/$DOMAIN
+sed -i s/IP/$IP/g ~/lemp-automation/$DOMAIN
+sed -i  s/WSERVER/$SERVER/g  ~/lemp-automation/$DOMAIN
+sed -i  s/DOMAIN/$DOMAIN/g  ~/lemp-automation/$DOMAIN
+mv ~/lemp-automation/$DOMAIN /etc/nginx/sites-available/
+ln -s /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/
+unlink /etc/nginx/sites-enabled/default
+
+nginx -s reload
