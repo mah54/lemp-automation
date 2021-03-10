@@ -1,0 +1,9 @@
+# easy-rsa vars
+set_var EASYRSA_REQ_COUNTRY     "US"
+set_var EASYRSA_REQ_PROVINCE    "CA"
+set_var EASYRSA_REQ_CITY        "SanFrancisco"
+set_var EASYRSA_REQ_ORG         "Fort-Funston"
+set_var EASYRSA_REQ_EMAIL       "email@gmail.com"
+set_var EASYRSA_REQ_OU          "Community"
+set_var EASYRSA_ALGO            "ec"
+set_var EASYRSA_DIGEST          "sha512"
