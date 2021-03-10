@@ -30,3 +30,14 @@ yes | apt install mysql-server
 mysql -Bse "CREATE DATABASE $DBNAME DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 mysql -Bse "GRANT ALL ON $DBNAME.* TO '$DBUSER'@'localhost' IDENTIFIED BY '$DBPW';"
 mysql -Bse "FLUSH PRIVILEGES;"
+
+# Install the WP-CLI Tool
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+sudo mv wp-cli.phar /usr/local/bin/wp-cli
+mkdir /var/www/wordpress
+cd /var/www/wordpress
+wp-cli core download --allow-root
+wp-cli config create --dbname=$DBNAME --dbuser=$DBUSER --dbpass=$DBPW --locale=en_DB --allow-root
+wp-cli core install --url=$DOMAIN --title=$DOMAIN --admin_user=$DBUSER --admin_password=$DBPW --email=email@gmail.com --allow-root
+sudo chown -R www-data:www-data /var/www/wordpress
