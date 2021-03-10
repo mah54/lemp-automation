@@ -27,3 +27,6 @@ yes | apt install php-fpm php-mysql php-curl php-gd php-intl php-mbstring php-so
 systemctl restart php7.2-fpm
 
 yes | apt install mysql-server
+mysql -Bse "CREATE DATABASE $DBNAME DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+mysql -Bse "GRANT ALL ON $DBNAME.* TO '$DBUSER'@'localhost' IDENTIFIED BY '$DBPW';"
+mysql -Bse "FLUSH PRIVILEGES;"
