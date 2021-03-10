@@ -5,4 +5,19 @@ if [ $EUID -ne 0 ]; then
     exit 2
 fi
 
+DOMAIN=google.com
 
+# mysql & wordpress variables
+DBNAME='google'
+DBUSER='wordpressuser'
+DBPW='password'
+
+# easy-rsa variables
+SERVER='google-nginx'
+CLIENT='client1'
+
+IP=$(hostname  -I | cut -f1 -d' ')
+RIP=$(echo $IP | awk -F. '{print $4"."$3"."$2"."$1}') # Reverse IP for PTR record
+
+ufw disable # is disable by default. Here I just make sure
+apt update
