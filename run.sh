@@ -39,19 +39,21 @@ mkdir /var/www/wordpress
 cd /var/www/wordpress
 wp-cli core download --allow-root
 wp-cli config create --dbname=$DBNAME --dbuser=$DBUSER --dbpass=$DBPW --locale=en_DB --allow-root
-wp-cli core install --url=$DOMAIN --title=$DOMAIN --admin_user=$DBUSER --admin_password=$DBPW --email=email@gmail.com --allow-root
-sudo chown -R www-data:www-data /var/www/wordpress
+wp-cli core install --url=$DOMAIN --title=$DOMAIN --admin_user=$DBUSER --admin_password=$DBPW --admin_email=email@gmail.com --allow-root
+chown -R www-data:www-data /var/www/wordpress
 
 #Install latest version of EasyRSA
-wget https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.8/EasyRSA-3.0.8.tgz -P ~
-tar xzvf EasyRSA-3.0.8.tgz
+wget https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.8/EasyRSA-3.0.8.tgz -P ~/
+tar xzvf ~/EasyRSA-3.0.8.tgz -C ~/
 mv ~/EasyRSA-3.0.8 ~/easy-rsa
 rm ~/EasyRSA-3.0.8.tgz
-echo yes | ~/easyrsa init-pki 2> /dev/null
-mv ~/lemp-automation/vars ~/easy-rsa
-echo | ~/easyrsa build-ca nopass 2> /dev/null
-~/easyrsa build-server-full $SERVER nopass
-~/easyrsa build-client-full $CLIENT nopass
+mv ~/lemp-automation/vars ~/easy-rsa/
+chown -R root:root ~/easy-rsa
+cd ~/easy-rsa
+echo yes | sudo ~/easy-rsa/easyrsa init-pki 2> /dev/null
+echo | sudo ~/easy-rsa/easyrsa build-ca nopass 2> /dev/null
+~/easy-rsa/easyrsa build-server-full $SERVER nopass
+~/easy-rsa/easyrsa build-client-full $CLIENT nopass
 mkdir /etc/nginx/ssl
 cp ~/easy-rsa/pki/private/$SERVER.key /etc/nginx/ssl/
 cp ~/easy-rsa/pki/issued/$SERVER.crt /etc/nginx/ssl/
