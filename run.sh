@@ -74,3 +74,30 @@ nginx -s reload
 # install bind9
 yes | apt install bind9 bind9utils bind9-doc dnsutils
 mkdir /etc/bind/zones
+
+# named.conf.options
+rm /etc/bind/named.conf.options
+sed -i s/IP/$IP/g ~/lemp-automation/named.conf.options
+mv ~/lemp-automation/named.conf.options /etc/bind/
+
+# named.conf.local
+rm /etc/bind/named.conf.local
+sed -i s/RIP/$RIP/g ~/lemp-automation/named.conf.local
+sed -i s/DOMAIN/$DOMAIN/g ~/lemp-automation/named.conf.local
+mv ~/lemp-automation/named.conf.local /etc/bind/
+
+# create zones
+# NS
+mv ~/lemp-automation/db.DOMAIN ~/lemp-automation/db.$DOMAIN
+sed -i s/IP/$IP/g ~/lemp-automation/db.$DOMAIN
+sed -i s/DOMAIN/$DOMAIN/g ~/lemp-automation/db.$DOMAIN
+mv ~/lemp-automation/db.$DOMAIN /etc/bind/zones/
+# PTR
+sed -i s/DOMAIN/$DOMAIN/g ~/lemp-automation/db.RIP
+mv ~/lemp-automation/db.RIP /etc/bind/zones/db.$RIP
+
+systemctl restart bind9
+systemctl restart systemd-resolved
+
+echo ---------------------------------------------
+echo Done. Please import \~/ca.crt to the Certificate Authorities section and \~/$CLIENT.pem to Personal section of your client browser.
